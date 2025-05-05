@@ -80,6 +80,20 @@ textarea {
   line-height: 1.4;
   box-sizing: border-box;
 }
+.underline-input {
+  width: 100%;
+  font-size: 12px;
+  padding: 2px 0;
+  border: none;
+  border-bottom: 1px solid #000;
+  background-color: transparent;
+  box-sizing: border-box;
+}
+
+.underline-input:focus {
+  outline: none;
+  border-bottom: 1px solid #333;
+}
 
 
   .form-section {
@@ -128,19 +142,20 @@ textarea {
 <body>
   <h1>Trackmobile Evaluation Sheet</h1>
   <div id="formContainer">
-    <div class="form-section">
-      <div class="two-column-row">
-        <label>Work Order:<input type="text" id="workOrder"></label>
-        <label>Date:<input type="date" id="date"></label>
-      </div>
-      <div class="two-column-row">
-        <label>Customer:<input type="text" id="customer"></label>
-        <label>Machine:<input type="text" id="machine"></label>
-      </div>
-      <div class="two-column-row">
-        <label>Hours:<input type="number" id="hours"></label>
-      </div>
-    </div>
+<div class="form-section">
+  <div class="two-column-row">
+    <label>Work Order:<input type="text" id="workOrder" class="underline-input"></label>
+    <label>Date:<input type="date" id="date" class="underline-input"></label>
+  </div>
+  <div class="two-column-row">
+    <label>Customer:<input type="text" id="customer" class="underline-input"></label>
+    <label>Machine:<input type="text" id="machine" class="underline-input"></label>
+  </div>
+  <div class="two-column-row">
+    <label>Hours:<input type="number" id="hours" class="underline-input"></label>
+  </div>
+</div>
+
 
 
     <div class="form-section">
