@@ -260,7 +260,7 @@ textarea {
     </div>
 
     <div class="button-group">
-      <button onclick="previewForm()">Preview</button>
+      <button id="previewBtn" onclick="previewForm()">Preview</button>
       <button onclick="downloadImage()">Download as Image</button>
     </div>
   </div>
@@ -336,12 +336,14 @@ function previewForm() {
   });
 
   // Show and hide containers
+  document.getElementById('previewBtn').style.display = 'none';
   previewContainer.style.display = 'block';
   formContainer.style.display = 'none';
   formPreview.appendChild(clone);
 }
 
 function editForm() {
+  document.getElementById('previewBtn').style.display = 'inline-block';
   document.getElementById('previewContainer').style.display = 'none';
   document.getElementById('formContainer').style.display = 'block';
 }
