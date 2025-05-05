@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Trackmobile Evaluation Sheet</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 1000px; margin: auto; }
+    h1 { text-align: center; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    td, th { border: 1px solid #ccc; padding: 5px; text-align: center; }
+    textarea { width: 100%; height: 60px; }
+    .form-section { margin-bottom: 20px; }
+    .button-group { text-align: center; margin-top: 20px; }
+    button { padding: 10px 20px; font-size: 16px; margin: 0 10px; }
+    .preview-container { display: none; }
+  </style>
+</head>
+<body>
+  <h1>Trackmobile Evaluation Sheet</h1>
+  <div id="formContainer">
+    <div class="form-section">
+      <label>Date: <input type="date" id="date"></label>
+      <label>Machine: <input type="text" id="machine"></label>
+      <label>Work Order: <input type="text" id="workOrder"></label>
+      <label>Customer: <input type="text" id="customer"></label>
+      <label>Hours: <input type="number" id="hours"></label>
+    </div>
+
+    <div class="form-section">
+      <table>
+        <thead>
+          <tr><th>Inspection Item</th><th>OK</th><th>Needs Repair</th><th>N/A</th><th>Notes</th></tr>
+        </thead>
+        <tbody id="inspectionTable">
+          <tr><td>Oil Leaks</td>
+            <td><input type="checkbox" class="ok"></td>
+            <td><input type="checkbox" class="repair"></td>
+            <td><input type="checkbox" class="na"></td>
+            <td><input type="text" class="notes"></td></tr>
+          <tr><td>Air Leaks</td>
+            <td><input type="checkbox" class="ok"></td>
+            <td><input type="checkbox" class="repair"></td>
+            <td><input type="checkbox" class="na"></td>
+            <td><input type="text" class="notes"></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="form-section">
+      <label>Additional Notes:</label>
+      <textarea id="additionalNotes"></textarea>
+    </div>
+
+    <div class="button-group">
+      <button onclick="previewForm()">Preview</button>
+      <button onclick="downloadImage()">Download as Image</button>
+    </div>
+  </div>
+
+  <div id="previewContainer" class="preview-container">
+    <h1>Preview</h1>
+    <div id="formPreview"></div>
+    <div class="button-group">
+      <button onclick="editForm()">Edit</button>
+    </div>
+  </div>
+
+  <script>
+    function previewForm() {
+      const formContainer = document.getElementById('formContainer');
+      const previewContainer = document.getElementById('previewContainer');
+      const formPreview = document.getElementById('formPreview');
+
+      formPreview.innerHTML = formContainer.innerHTML;
+      previewContainer.style.display = 'block';
+      formContainer.style.display = 'none';
+    }
+
+    function editForm() {
+      document.getElementById('previewContainer').style.display = 'none';
+      document.getElementById('formContainer').style.display = 'block';
+    }
+
+    function downloadImage() {
+      html2canvas(document.querySelector("#previewContainer"), {scale: 2}).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'Trackmobile_Evaluation.png';
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+    }
+  </script>
+</body>
+</html>
