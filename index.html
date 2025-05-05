@@ -264,13 +264,14 @@ textarea {
   <button onclick="downloadImage()">Download as Image</button>
 </div>
 
-<div id="previewContainer" class="preview-container">
+<div id="previewContainer" class="preview-container" style="display:none;">
   <h1 id="previewHeading">Preview</h1>
   <div id="formPreview"></div>
   <div class="button-group preview-buttons">
     <button onclick="editForm()">Edit</button>
   </div>
 </div>
+
 
 <script>
 function previewForm() {
@@ -281,9 +282,10 @@ function previewForm() {
   // Clear previous preview
   formPreview.innerHTML = '';
 
-  // Clone the form container
+  // Clone the form content (only what's inside formContainer)
   const clone = formContainer.cloneNode(true);
 
+  // Handle input replacements
   const inputs = clone.querySelectorAll('input[type="text"], input[type="number"], input[type="date"]');
   inputs.forEach(input => {
     const value = input.value || ' ';
@@ -316,14 +318,14 @@ function previewForm() {
     }
   });
 
-  // Replace checkboxes with checkmarks
+  // Checkboxes → checkmarks
   const checkboxes = clone.querySelectorAll('input[type="checkbox"]');
   checkboxes.forEach(checkbox => {
     const td = checkbox.closest('td');
     td.textContent = checkbox.checked ? '✔' : '';
   });
 
-  // Replace all textareas with their content
+  // Textareas → plain text
   const textareas = clone.querySelectorAll('textarea');
   textareas.forEach(textarea => {
     const div = document.createElement('div');
@@ -333,18 +335,19 @@ function previewForm() {
     textarea.parentNode.replaceChild(div, textarea);
   });
 
-  // Show and hide containers
+  // Replace preview content
+  const title = document.createElement('h1');
+  title.textContent = 'Trackmobile Evaluation Sheet';
+  title.style.textAlign = 'center';
+  title.style.fontSize = '18px';
+  title.style.marginBottom = '10px';
+
+  formPreview.innerHTML = ''; // clear again just in case
+  formPreview.appendChild(title);
+  formPreview.appendChild(clone);
+
   previewContainer.style.display = 'block';
   formContainer.style.display = 'none';
-
-  const heading = document.createElement('h1');
-  heading.textContent = 'Trackmobile Evaluation Sheet';
-  heading.style.textAlign = 'center';
-  heading.style.fontSize = '18px';
-  heading.style.marginBottom = '10px';
-
-  formPreview.appendChild(heading);
-  formPreview.appendChild(clone);
 }
 
 function editForm() {
@@ -353,11 +356,11 @@ function editForm() {
 }
 
 function downloadImage() {
-  const previewTitle = document.querySelector('#previewHeading');
+  const previewHeading = document.getElementById('previewHeading');
   const previewButtons = document.querySelectorAll('.preview-buttons');
 
-  // Hide elements before capture
-  if (previewTitle) previewTitle.style.display = 'none';
+  // Hide preview label and buttons
+  if (previewHeading) previewHeading.style.display = 'none';
   previewButtons.forEach(el => el.style.display = 'none');
 
   html2canvas(document.querySelector("#previewContainer"), { scale: 2 }).then(canvas => {
@@ -366,8 +369,8 @@ function downloadImage() {
     link.href = canvas.toDataURL("image/png");
     link.click();
 
-    // Restore visibility after capture
-    if (previewTitle) previewTitle.style.display = 'block';
+    // Restore visibility
+    if (previewHeading) previewHeading.style.display = 'block';
     previewButtons.forEach(el => el.style.display = 'flex');
   });
 }
@@ -388,7 +391,6 @@ function makeCheckboxesMutuallyExclusive() {
 }
 
 window.onload = function () {
-  // Auto-check the "OK" checkbox (first checkbox in each row)
   document.querySelectorAll("table tbody tr").forEach(row => {
     const checkboxes = row.querySelectorAll("input[type='checkbox']");
     if (checkboxes.length >= 1) {
