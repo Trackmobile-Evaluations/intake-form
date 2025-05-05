@@ -27,26 +27,20 @@ textarea {
   display: block;
   width: 95%;
   min-height: 60px;
-  max-height: 120px;
+  max-height: 60px; /* force scroll sooner */
   padding: 6px;
   margin: auto;
   font-family: Arial, sans-serif;
   font-size: 14px;
   color: #000;
-
-  /* Scrollbar control */
-  overflow-x: hidden;
-  overflow-y: auto;
-
-  /* Remove styling */
+  overflow: auto;
+  resize: vertical;
   background-color: transparent;
   border: none;
   outline: none;
   box-shadow: none;
-  resize: vertical;
-
-  /* Ensure it doesn't expand past cell */
   box-sizing: border-box;
+  white-space: pre-wrap; /* ensures wrapping doesn’t trick browser into not scrolling */
 }
     .form-section { margin-bottom: 20px; }
     .button-group { text-align: center; margin-top: 20px; }
