@@ -7,9 +7,22 @@
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; max-width: 1000px; margin: auto; }
     h1 { text-align: center; }
-    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-    td, th { border: 1px solid #ccc; padding: 5px; text-align: center; }
-    td:first-child, th:first-child { text-align: left; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      table-layout: fixed;
+    }
+    td, th {
+      border: 1px solid #ccc;
+      padding: 5px;
+      text-align: center;
+      word-wrap: break-word;
+    }
+    td:first-child, th:first-child {
+      text-align: left;
+      width: 40%;
+    }
     textarea { width: 100%; height: 60px; }
     .form-section { margin-bottom: 20px; }
     .button-group { text-align: center; margin-top: 20px; }
@@ -19,6 +32,14 @@
     .two-column-row label { flex: 0 0 48%; }
     input[type="text"], input[type="date"], input[type="number"] { width: 100%; }
     .section-title { background-color: #f0f0f0; font-weight: bold; text-align: left; padding: 5px; border: 1px solid #ccc; }
+  th:nth-child(2), td:nth-child(2),
+    th:nth-child(3), td:nth-child(3),
+    th:nth-child(4), td:nth-child(4) {
+      width: 10%;
+    }
+    th:nth-child(5), td:nth-child(5) {
+      width: 30%;
+    }
   </style>
 </head>
 <body>
@@ -37,6 +58,7 @@
         <label>Hours:<input type="number" id="hours"></label>
       </div>
     </div>
+
 
     <div class="form-section">
       <table>
