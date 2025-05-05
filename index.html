@@ -274,7 +274,7 @@ textarea {
   </div>
 
 <script>
- function previewForm() {
+function previewForm() {
   const formContainer = document.getElementById('formContainer');
   const previewContainer = document.getElementById('previewContainer');
   const formPreview = document.getElementById('formPreview');
@@ -285,22 +285,37 @@ textarea {
   // Clone the form container
   const clone = formContainer.cloneNode(true);
 
-  // Replace input fields with plain text
+  // Replace labeled input fields with underlined spans
   const inputs = clone.querySelectorAll('input[type="text"], input[type="number"], input[type="date"]');
-inputs.forEach(input => {
-  const value = input.value || ' ';
-  const wrapper = document.createElement('span');
-  wrapper.style.display = 'inline-block';
-  wrapper.style.borderBottom = '1px solid #000';
-  wrapper.style.width = input.offsetWidth + 'px';
-  wrapper.style.padding = '2px 0';
-  wrapper.style.fontSize = '12px';
-  wrapper.style.verticalAlign = 'bottom';
+  inputs.forEach(input => {
+    const value = input.value || ' ';
+    const label = input.closest('label');
 
-  wrapper.textContent = value;
-  input.parentNode.replaceChild(wrapper, input);
-});
+    if (label) {
+      const labelText = label.childNodes[0].textContent;
 
+      const container = document.createElement('label');
+      container.style.flex = label.style.flex || '0 0 48%';
+      container.style.display = 'flex';
+      container.style.flexDirection = 'column';
+      container.style.fontSize = '12px';
+
+      const labelSpan = document.createElement('span');
+      labelSpan.textContent = labelText;
+
+      const underlineSpan = document.createElement('span');
+      underlineSpan.textContent = value;
+      underlineSpan.style.borderBottom = '1px solid #000';
+      underlineSpan.style.padding = '2px 0';
+      underlineSpan.style.display = 'inline-block';
+      underlineSpan.style.minHeight = '16px';
+
+      container.appendChild(labelSpan);
+      container.appendChild(underlineSpan);
+
+      label.parentNode.replaceChild(container, label);
+    }
+  });
 
   // Replace checkboxes with checkmarks
   const checkboxes = clone.querySelectorAll('input[type="checkbox"]');
@@ -325,48 +340,48 @@ inputs.forEach(input => {
   formPreview.appendChild(clone);
 }
 
+function editForm() {
+  document.getElementById('previewContainer').style.display = 'none';
+  document.getElementById('formContainer').style.display = 'block';
+}
 
-  function editForm() {
-    document.getElementById('previewContainer').style.display = 'none';
-    document.getElementById('formContainer').style.display = 'block';
-  }
+function downloadImage() {
+  html2canvas(document.querySelector("#previewContainer"), { scale: 2 }).then(canvas => {
+    const link = document.createElement('a');
+    link.download = 'Trackmobile_Evaluation.png';
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  });
+}
 
-  function downloadImage() {
-    html2canvas(document.querySelector("#previewContainer"), {scale: 2}).then(canvas => {
-      const link = document.createElement('a');
-      link.download = 'Trackmobile_Evaluation.png';
-      link.href = canvas.toDataURL("image/png");
-      link.click();
-    });
-  }
-
-  function makeCheckboxesMutuallyExclusive() {
-    document.querySelectorAll("table tbody tr").forEach(row => {
-      const checkboxes = row.querySelectorAll("input[type='checkbox']");
-      checkboxes.forEach((cb, idx) => {
-        cb.addEventListener('change', () => {
-          if (cb.checked) {
-            checkboxes.forEach((otherCb, otherIdx) => {
-              if (otherIdx !== idx) otherCb.checked = false;
-            });
-          }
-        });
+function makeCheckboxesMutuallyExclusive() {
+  document.querySelectorAll("table tbody tr").forEach(row => {
+    const checkboxes = row.querySelectorAll("input[type='checkbox']");
+    checkboxes.forEach((cb, idx) => {
+      cb.addEventListener('change', () => {
+        if (cb.checked) {
+          checkboxes.forEach((otherCb, otherIdx) => {
+            if (otherIdx !== idx) otherCb.checked = false;
+          });
+        }
       });
     });
-  }
+  });
+}
 
-  window.onload = function () {
-    // Auto-check the "OK" checkbox (first checkbox in each row)
-    document.querySelectorAll("table tbody tr").forEach(row => {
-      const checkboxes = row.querySelectorAll("input[type='checkbox']");
-      if (checkboxes.length >= 1) {
-        checkboxes[0].checked = true;
-      }
-    });
+window.onload = function () {
+  // Auto-check the "OK" checkbox (first checkbox in each row)
+  document.querySelectorAll("table tbody tr").forEach(row => {
+    const checkboxes = row.querySelectorAll("input[type='checkbox']");
+    if (checkboxes.length >= 1) {
+      checkboxes[0].checked = true;
+    }
+  });
 
-    makeCheckboxesMutuallyExclusive();
-  };
+  makeCheckboxesMutuallyExclusive();
+};
 </script>
+
 
 </body>
 </html>
