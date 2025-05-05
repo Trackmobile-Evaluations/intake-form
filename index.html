@@ -283,7 +283,7 @@ textarea {
   const checkboxes = clone.querySelectorAll('input[type="checkbox"]');
   checkboxes.forEach(checkbox => {
     const td = checkbox.closest('td');
-    td.textContent = checkbox.checked ? '✅' : '';
+    td.textContent = checkbox.checked ? '✔' : '';
   });
 
   // Replace all textareas with their content
