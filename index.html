@@ -143,10 +143,24 @@ textarea {
 .exclude-from-image.hide-for-download {
   display: none !important;
 }
+
 #formPreviewContent {
-  padding: 36px;
-  background-color: white;
-  box-sizing: border-box;
+    width: 850px;
+    padding: 20px;
+    background: white;
+    box-sizing: border-box;
+    margin: auto;
+}
+@media (max-width: 600px) {
+  input[type="text"],
+  input[type="number"],
+  input[type="date"],
+  textarea,
+  .underline-input {
+    font-size: 16px !important;
+  }
+}
+</style>
 }
 @media (max-width: 600px) {
   input[type="text"],
