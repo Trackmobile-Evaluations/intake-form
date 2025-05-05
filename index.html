@@ -287,18 +287,20 @@ textarea {
 
   // Replace input fields with plain text
   const inputs = clone.querySelectorAll('input[type="text"], input[type="number"], input[type="date"]');
-  inputs.forEach(input => {
-    const value = input.value;
-const underlineDiv = document.createElement('div');
-underlineDiv.textContent = value || ' ';
-underlineDiv.style.borderBottom = '1px solid #000';
-underlineDiv.style.padding = '2px 0';
-underlineDiv.style.marginTop = '2px';
-underlineDiv.style.fontSize = '12px';
-underlineDiv.style.minHeight = '16px'; // Ensure consistent height
-input.parentNode.replaceChild(underlineDiv, input);
+inputs.forEach(input => {
+  const value = input.value || ' ';
+  const wrapper = document.createElement('span');
+  wrapper.style.display = 'inline-block';
+  wrapper.style.borderBottom = '1px solid #000';
+  wrapper.style.width = input.offsetWidth + 'px';
+  wrapper.style.padding = '2px 0';
+  wrapper.style.fontSize = '12px';
+  wrapper.style.verticalAlign = 'bottom';
 
-  });
+  wrapper.textContent = value;
+  input.parentNode.replaceChild(wrapper, input);
+});
+
 
   // Replace checkboxes with checkmarks
   const checkboxes = clone.querySelectorAll('input[type="checkbox"]');
