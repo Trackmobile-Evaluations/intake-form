@@ -141,9 +141,8 @@ textarea {
 </head>
 <body>
   <h1>Trackmobile Evaluation Sheet</h1>
-<div id="formContainer">
-  <div id="formFields">
-    <div class="form-section">
+  <div id="formContainer">
+<div class="form-section">
   <div class="two-column-row">
     <label>Work Order:<input type="text" id="workOrder" class="underline-input"></label>
     <label>Date:<input type="date" id="date" class="underline-input"></label>
@@ -259,33 +258,32 @@ textarea {
       <label><strong>Any Additional Repairs:</strong></label>
       <textarea id="additionalNotes" rows="12"></textarea>
     </div>
-</div>
-<div class="button-group preview-buttons">
-  <button onclick="previewForm()">Preview</button>
-  <button onclick="downloadImage()">Download as Image</button>
-</div>
 
-<div id="previewContainer" class="preview-container" style="display:none;">
-  <h1 id="previewHeading">Preview</h1>
-  <div id="formPreview"></div>
-  <div class="button-group preview-buttons">
-    <button onclick="editForm()">Edit</button>
+    <div class="button-group">
+      <button onclick="previewForm()">Preview</button>
+      <button onclick="downloadImage()">Download as Image</button>
+    </div>
   </div>
-</div>
 
+  <div id="previewContainer" class="preview-container">
+    <h1>Preview</h1>
+    <div id="formPreview"></div>
+    <div class="button-group">
+      <button onclick="editForm()">Edit</button>
+    </div>
+  </div>
 
 <script>
 function previewForm() {
   const formContainer = document.getElementById('formContainer');
-  const formFields = document.getElementById('formFields'); // Only clone the fields
   const previewContainer = document.getElementById('previewContainer');
   const formPreview = document.getElementById('formPreview');
 
   // Clear previous preview
   formPreview.innerHTML = '';
 
-  // Clone only the form fields, not the buttons
-  const clone = formFields.cloneNode(true);
+  // Clone the form container
+  const clone = formContainer.cloneNode(true);
 
   // Replace labeled input fields with underlined spans
   const inputs = clone.querySelectorAll('input[type="text"], input[type="number"], input[type="date"]');
@@ -296,11 +294,10 @@ function previewForm() {
     if (label) {
       const labelText = label.childNodes[0].textContent;
 
-      const container = document.createElement('div');
+      const container = document.createElement('label');
       container.style.flex = label.style.flex || '0 0 48%';
       container.style.display = 'flex';
-      container.style.alignItems = 'center';
-      container.style.gap = '6px';
+      container.style.flexDirection = 'column';
       container.style.fontSize = '12px';
 
       const labelSpan = document.createElement('span');
@@ -309,9 +306,9 @@ function previewForm() {
       const underlineSpan = document.createElement('span');
       underlineSpan.textContent = value;
       underlineSpan.style.borderBottom = '1px solid #000';
-      underlineSpan.style.display = 'inline-block';
-      underlineSpan.style.minWidth = '120px';
       underlineSpan.style.padding = '2px 0';
+      underlineSpan.style.display = 'inline-block';
+      underlineSpan.style.minHeight = '16px';
 
       container.appendChild(labelSpan);
       container.appendChild(underlineSpan);
@@ -327,7 +324,7 @@ function previewForm() {
     td.textContent = checkbox.checked ? '✔' : '';
   });
 
-  // Replace all textareas with plain text
+  // Replace all textareas with their content
   const textareas = clone.querySelectorAll('textarea');
   textareas.forEach(textarea => {
     const div = document.createElement('div');
@@ -337,7 +334,7 @@ function previewForm() {
     textarea.parentNode.replaceChild(div, textarea);
   });
 
-  // Show the preview
+  // Show and hide containers
   previewContainer.style.display = 'block';
   formContainer.style.display = 'none';
   formPreview.appendChild(clone);
@@ -349,22 +346,11 @@ function editForm() {
 }
 
 function downloadImage() {
-  const previewHeading = document.getElementById('previewHeading');
-  const previewButtons = document.querySelectorAll('.preview-buttons');
-
-  // Hide heading + buttons before download
-  if (previewHeading) previewHeading.style.display = 'none';
-  previewButtons.forEach(el => el.style.display = 'none');
-
   html2canvas(document.querySelector("#previewContainer"), { scale: 2 }).then(canvas => {
     const link = document.createElement('a');
     link.download = 'Trackmobile_Evaluation.png';
     link.href = canvas.toDataURL("image/png");
     link.click();
-
-    // Restore after download
-    if (previewHeading) previewHeading.style.display = 'block';
-    previewButtons.forEach(el => el.style.display = 'flex');
   });
 }
 
@@ -384,6 +370,7 @@ function makeCheckboxesMutuallyExclusive() {
 }
 
 window.onload = function () {
+  // Auto-check the "OK" checkbox (first checkbox in each row)
   document.querySelectorAll("table tbody tr").forEach(row => {
     const checkboxes = row.querySelectorAll("input[type='checkbox']");
     if (checkboxes.length >= 1) {
@@ -394,8 +381,6 @@ window.onload = function () {
   makeCheckboxesMutuallyExclusive();
 };
 </script>
-
-
 
 
 </body>
