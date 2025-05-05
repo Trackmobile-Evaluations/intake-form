@@ -258,6 +258,8 @@ textarea {
           <tr><td>Brake Hose & Pressure Switch</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><textarea></textarea></td></tr>
           <tr><td>Air Tank Drains</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><textarea></textarea></td></tr>
           <tr><td>Air System Operation/Train Air</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><textarea></textarea></td></tr>
+          <tr><td>Air Bag Operation</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><textarea></textarea></td></tr>
+          <tr><td>Air Dryer Operation</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><textarea></textarea></td></tr>
         </tbody>
       </table>
     </div>
@@ -275,7 +277,7 @@ textarea {
   </div>
 
 <div id="previewContainer" class="preview-container">
-  <div id="formPreviewContent">
+    <div id="formPreviewContent">
     <div id="formPreview"></div>
   </div>
 
@@ -299,14 +301,16 @@ function previewForm() {
 
   // Clone the form container
   const clone = formContainer.cloneNode(true);
-  // Hide any elements meant to be excluded from the preview
-const excludePreviewBtns = clone.querySelectorAll('.exclude-from-preview');
-excludePreviewBtns.forEach(btn => btn.style.display = 'none');
-const previewBtnInClone = clone.querySelector('#previewBtn');
-if (previewBtnInClone) {
-  previewBtnInClone.style.display = 'none';
-}
 
+  // Hide any elements meant to be excluded from the preview
+  const excludePreviewBtns = clone.querySelectorAll('.exclude-from-preview');
+  excludePreviewBtns.forEach(btn => btn.style.display = 'none');
+  const previewBtnInClone = clone.querySelector('#previewBtn');
+  if (previewBtnInClone) {
+    previewBtnInClone.style.display = 'none';
+  }
+
+  // Convert inputs to styled preview spans
   const inputs = clone.querySelectorAll('input[type="text"], input[type="number"], input[type="date"]');
   inputs.forEach(input => {
     const value = input.value || ' ';
@@ -339,15 +343,14 @@ if (previewBtnInClone) {
     }
   });
 
-
-  // Replace checkboxes with checkmarks
+  // Convert checkboxes to ✔
   const checkboxes = clone.querySelectorAll('input[type="checkbox"]');
   checkboxes.forEach(checkbox => {
     const td = checkbox.closest('td');
     td.textContent = checkbox.checked ? '✔' : '';
   });
 
-  // Replace all textareas with their content
+  // Replace textareas with plain text
   const textareas = clone.querySelectorAll('textarea');
   textareas.forEach(textarea => {
     const div = document.createElement('div');
@@ -357,11 +360,20 @@ if (previewBtnInClone) {
     textarea.parentNode.replaceChild(div, textarea);
   });
 
-  // Show and hide containers
+  // Add preview title
+  const title = document.createElement('h1');
+  title.textContent = 'Trackmobile Evaluation Sheet';
+  title.style.textAlign = 'center';
+  title.style.fontSize = '18px';
+  title.style.marginBottom = '10px';
+
+  formPreview.appendChild(title);
+  formPreview.appendChild(clone);
+
+  // Show/hide containers
   document.getElementById('previewBtn').style.display = 'none';
   previewContainer.style.display = 'block';
   formContainer.style.display = 'none';
-  formPreview.appendChild(clone);
 }
 
 function editForm() {
