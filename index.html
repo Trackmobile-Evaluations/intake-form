@@ -398,17 +398,28 @@ function captureImage() {
   const previewContent = document.getElementById('formPreviewContent');
   const elementsToHide = document.querySelectorAll('.exclude-from-image');
 
+  // Get values for dynamic naming
+  const date = document.getElementById('date').value || 'NoDate';
+  const workOrder = document.getElementById('workOrder').value.trim() || 'NoWO';
+  const customer = document.getElementById('customer').value.trim() || 'NoCustomer';
+
+  // Format the date as YYYY-MM-DD if it's in ISO format
+  const formattedDate = date ? new Date(date).toISOString().split('T')[0] : 'NoDate';
+
+  const filename = `${formattedDate} - ${workOrder} - ${customer}.png`.replace(/[\/\\:*?"<>|]/g, '');
+
   elementsToHide.forEach(el => el.classList.add('hide-for-download'));
 
   html2canvas(previewContent).then(canvas => {
     const link = document.createElement('a');
-    link.download = 'Trackmobile_Evaluation.png';
+    link.download = filename;
     link.href = canvas.toDataURL();
     link.click();
 
     elementsToHide.forEach(el => el.classList.remove('hide-for-download'));
   });
 }
+
 
 function editForm() {
   document.getElementById('previewBtn').style.display = 'inline-block';
