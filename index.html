@@ -267,22 +267,23 @@ textarea {
       <textarea id="additionalNotes" rows="12"></textarea>
     </div>
 
-    <div class="button-group">
-      <button id="previewBtn" onclick="previewForm()">Preview</button>
-      <button onclick="downloadImage()">Download as Image</button>
-    </div>
+<div class="button-group">
+  <button id="previewBtn" onclick="previewForm()">Preview</button>
+  <button class="exclude-from-preview" onclick="downloadImage()">Download as Image</button>
+</div>
+
   </div>
 
 <div id="previewContainer" class="preview-container">
   <div id="formPreviewContent">
-    <h1>Trackmobile Evaluation Sheet</h1>
     <div id="formPreview"></div>
   </div>
 
-  <div class="button-group exclude-from-image">
-    <button onclick="downloadImage()">Download as Image</button>
-    <button onclick="editForm()">Edit</button>
-  </div>
+<div class="button-group">
+  <button class="exclude-from-image" onclick="downloadImage()">Download as Image</button>
+  <button class="exclude-from-image" onclick="editForm()">Edit</button>
+</div>
+
 </div>
 
   </div>
@@ -298,6 +299,9 @@ function previewForm() {
 
   // Clone the form container
   const clone = formContainer.cloneNode(true);
+  // Hide any elements meant to be excluded from the preview
+const excludePreviewBtns = clone.querySelectorAll('.exclude-from-preview');
+excludePreviewBtns.forEach(btn => btn.style.display = 'none');
 const previewBtnInClone = clone.querySelector('#previewBtn');
 if (previewBtnInClone) {
   previewBtnInClone.style.display = 'none';
