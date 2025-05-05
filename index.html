@@ -289,9 +289,15 @@ textarea {
   const inputs = clone.querySelectorAll('input[type="text"], input[type="number"], input[type="date"]');
   inputs.forEach(input => {
     const value = input.value;
-    const span = document.createElement('span');
-    span.textContent = value;
-    input.parentNode.replaceChild(span, input);
+const underlineDiv = document.createElement('div');
+underlineDiv.textContent = value || ' ';
+underlineDiv.style.borderBottom = '1px solid #000';
+underlineDiv.style.padding = '2px 0';
+underlineDiv.style.marginTop = '2px';
+underlineDiv.style.fontSize = '12px';
+underlineDiv.style.minHeight = '16px'; // Ensure consistent height
+input.parentNode.replaceChild(underlineDiv, input);
+
   });
 
   // Replace checkboxes with checkmarks
