@@ -135,6 +135,14 @@ textarea {
   label[for="additionalNotes"] {
     font-weight: bold;
   }
+  .exclude-from-image {
+  display: block;
+}
+
+.exclude-from-image.hide-for-download {
+  display: none !important;
+}
+
 </style>
 
 
@@ -265,12 +273,18 @@ textarea {
     </div>
   </div>
 
-  <div id="previewContainer" class="preview-container">
-    <h1>Preview</h1>
+<div id="previewContainer" class="preview-container">
+  <div id="formPreviewContent">
+    <h1>Trackmobile Evaluation Sheet</h1>
     <div id="formPreview"></div>
-    <div class="button-group">
-      <button onclick="editForm()">Edit</button>
-    </div>
+  </div>
+
+  <div class="button-group exclude-from-image">
+    <button onclick="downloadImage()">Download as Image</button>
+    <button onclick="editForm()">Edit</button>
+  </div>
+</div>
+
   </div>
 
 <script>
@@ -353,16 +367,22 @@ function editForm() {
 }
 
 function downloadImage() {
-  const formContent = document.getElementById('formPreview');
+  const previewContent = document.getElementById('formPreviewContent');
 
-  html2canvas(formContent).then(canvas => {
+  // Hide buttons before capturing
+  const elementsToHide = document.querySelectorAll('.exclude-from-image');
+  elementsToHide.forEach(el => el.classList.add('hide-for-download'));
+
+  html2canvas(previewContent).then(canvas => {
     const link = document.createElement('a');
     link.download = 'Trackmobile_Evaluation.png';
     link.href = canvas.toDataURL();
     link.click();
+
+    // Show buttons again after capture
+    elementsToHide.forEach(el => el.classList.remove('hide-for-download'));
   });
 }
-
 
 function makeCheckboxesMutuallyExclusive() {
   document.querySelectorAll("table tbody tr").forEach(row => {
