@@ -68,18 +68,19 @@ textarea {
   min-height: 16px; /* shrink the minimum height */
   max-height: 32px; /* optional: cap height */
 }
-  #additionalNotes {
-    width: 100%;
-    height: 12em;
-    border: 1px solid #ccc;
-    padding: 6px;
-    resize: none;
-    overflow: hidden;
-    font-size: 12px;
-    font-family: Arial, sans-serif;
-    background-color: #fff;
-    line-height: 1.2;
-  }
+#additionalNotes {
+  width: 100%;
+  height: 16em; /* raised to show full 12 lines */
+  border: 1px solid #ccc;
+  padding: 6px;
+  resize: none;
+  overflow: hidden;
+  font-size: 12px;
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+  line-height: 1.2;
+  box-sizing: border-box;
+}
 
   .form-section {
     margin-bottom: 12px;
