@@ -25,24 +25,29 @@
     }
 textarea {
   display: block;
-  width: 98%;
+  width: 95%;
   min-height: 60px;
   max-height: 120px;
-  overflow-y: auto;
-  resize: vertical;
   padding: 6px;
+  margin: auto;
   font-family: Arial, sans-serif;
   font-size: 14px;
+  color: #000;
+
+  /* Scrollbar control */
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  /* Remove styling */
   background-color: transparent;
-  box-sizing: border-box;
   border: none;
   outline: none;
   box-shadow: none;
-  margin: auto;
+  resize: vertical;
+
+  /* Ensure it doesn't expand past cell */
+  box-sizing: border-box;
 }
-
-
-
     .form-section { margin-bottom: 20px; }
     .button-group { text-align: center; margin-top: 20px; }
     button { padding: 10px 20px; font-size: 16px; margin: 0 10px; }
