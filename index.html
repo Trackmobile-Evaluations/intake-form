@@ -259,19 +259,18 @@ textarea {
       <textarea id="additionalNotes" rows="12"></textarea>
     </div>
 
-    <div class="button-group">
-      <button onclick="previewForm()">Preview</button>
-      <button onclick="downloadImage()">Download as Image</button>
-    </div>
-  </div>
+<div class="button-group preview-buttons">
+  <button onclick="previewForm()">Preview</button>
+  <button onclick="downloadImage()">Download as Image</button>
+</div>
 
-  <div id="previewContainer" class="preview-container">
-    <h1>Preview</h1>
-    <div id="formPreview"></div>
-    <div class="button-group">
-      <button onclick="editForm()">Edit</button>
-    </div>
+<div id="previewContainer" class="preview-container">
+  <h1 id="previewHeading">Preview</h1>
+  <div id="formPreview"></div>
+  <div class="button-group preview-buttons">
+    <button onclick="editForm()">Edit</button>
   </div>
+</div>
 
 <script>
 function previewForm() {
@@ -317,7 +316,6 @@ function previewForm() {
     }
   });
 
-
   // Replace checkboxes with checkmarks
   const checkboxes = clone.querySelectorAll('input[type="checkbox"]');
   checkboxes.forEach(checkbox => {
@@ -338,6 +336,14 @@ function previewForm() {
   // Show and hide containers
   previewContainer.style.display = 'block';
   formContainer.style.display = 'none';
+
+  const heading = document.createElement('h1');
+  heading.textContent = 'Trackmobile Evaluation Sheet';
+  heading.style.textAlign = 'center';
+  heading.style.fontSize = '18px';
+  heading.style.marginBottom = '10px';
+
+  formPreview.appendChild(heading);
   formPreview.appendChild(clone);
 }
 
@@ -347,11 +353,22 @@ function editForm() {
 }
 
 function downloadImage() {
+  const previewTitle = document.querySelector('#previewHeading');
+  const previewButtons = document.querySelectorAll('.preview-buttons');
+
+  // Hide elements before capture
+  if (previewTitle) previewTitle.style.display = 'none';
+  previewButtons.forEach(el => el.style.display = 'none');
+
   html2canvas(document.querySelector("#previewContainer"), { scale: 2 }).then(canvas => {
     const link = document.createElement('a');
     link.download = 'Trackmobile_Evaluation.png';
     link.href = canvas.toDataURL("image/png");
     link.click();
+
+    // Restore visibility after capture
+    if (previewTitle) previewTitle.style.display = 'block';
+    previewButtons.forEach(el => el.style.display = 'flex');
   });
 }
 
@@ -382,6 +399,7 @@ window.onload = function () {
   makeCheckboxesMutuallyExclusive();
 };
 </script>
+
 
 
 </body>
