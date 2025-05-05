@@ -353,13 +353,16 @@ function editForm() {
 }
 
 function downloadImage() {
-  html2canvas(document.querySelector("#previewContainer"), { scale: 2 }).then(canvas => {
+  const formContent = document.getElementById('formPreview');
+
+  html2canvas(formContent).then(canvas => {
     const link = document.createElement('a');
     link.download = 'Trackmobile_Evaluation.png';
-    link.href = canvas.toDataURL("image/png");
+    link.href = canvas.toDataURL();
     link.click();
   });
 }
+
 
 function makeCheckboxesMutuallyExclusive() {
   document.querySelectorAll("table tbody tr").forEach(row => {
