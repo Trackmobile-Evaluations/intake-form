@@ -284,6 +284,10 @@ function previewForm() {
 
   // Clone the form container
   const clone = formContainer.cloneNode(true);
+const previewBtnInClone = clone.querySelector('#previewBtn');
+if (previewBtnInClone) {
+  previewBtnInClone.style.display = 'none';
+}
 
   const inputs = clone.querySelectorAll('input[type="text"], input[type="number"], input[type="date"]');
   inputs.forEach(input => {
