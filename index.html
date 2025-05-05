@@ -258,30 +258,58 @@ textarea {
     </div>
   </div>
 
-  <script>
-    function previewForm() {
-      const formContainer = document.getElementById('formContainer');
-      const previewContainer = document.getElementById('previewContainer');
-      const formPreview = document.getElementById('formPreview');
+<script>
+  function previewForm() {
+    const formContainer = document.getElementById('formContainer');
+    const previewContainer = document.getElementById('previewContainer');
+    const formPreview = document.getElementById('formPreview');
 
-      formPreview.innerHTML = formContainer.innerHTML;
-      previewContainer.style.display = 'block';
-      formContainer.style.display = 'none';
-    }
+    formPreview.innerHTML = formContainer.innerHTML;
+    previewContainer.style.display = 'block';
+    formContainer.style.display = 'none';
+  }
 
-    function editForm() {
-      document.getElementById('previewContainer').style.display = 'none';
-      document.getElementById('formContainer').style.display = 'block';
-    }
+  function editForm() {
+    document.getElementById('previewContainer').style.display = 'none';
+    document.getElementById('formContainer').style.display = 'block';
+  }
 
-    function downloadImage() {
-      html2canvas(document.querySelector("#previewContainer"), {scale: 2}).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'Trackmobile_Evaluation.png';
-        link.href = canvas.toDataURL("image/png");
-        link.click();
+  function downloadImage() {
+    html2canvas(document.querySelector("#previewContainer"), {scale: 2}).then(canvas => {
+      const link = document.createElement('a');
+      link.download = 'Trackmobile_Evaluation.png';
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    });
+  }
+
+  function makeCheckboxesMutuallyExclusive() {
+    document.querySelectorAll("table tbody tr").forEach(row => {
+      const checkboxes = row.querySelectorAll("input[type='checkbox']");
+      checkboxes.forEach((cb, idx) => {
+        cb.addEventListener('change', () => {
+          if (cb.checked) {
+            checkboxes.forEach((otherCb, otherIdx) => {
+              if (otherIdx !== idx) otherCb.checked = false;
+            });
+          }
+        });
       });
-    }
-  </script>
+    });
+  }
+
+  window.onload = function () {
+    // Auto-check the "OK" checkbox (first checkbox in each row)
+    document.querySelectorAll("table tbody tr").forEach(row => {
+      const checkboxes = row.querySelectorAll("input[type='checkbox']");
+      if (checkboxes.length >= 1) {
+        checkboxes[0].checked = true;
+      }
+    });
+
+    makeCheckboxesMutuallyExclusive();
+  };
+</script>
+
 </body>
 </html>
