@@ -259,15 +259,49 @@ textarea {
   </div>
 
 <script>
-  function previewForm() {
-    const formContainer = document.getElementById('formContainer');
-    const previewContainer = document.getElementById('previewContainer');
-    const formPreview = document.getElementById('formPreview');
+ function previewForm() {
+  const formContainer = document.getElementById('formContainer');
+  const previewContainer = document.getElementById('previewContainer');
+  const formPreview = document.getElementById('formPreview');
 
-    formPreview.innerHTML = formContainer.innerHTML;
-    previewContainer.style.display = 'block';
-    formContainer.style.display = 'none';
-  }
+  // Clear previous preview
+  formPreview.innerHTML = '';
+
+  // Clone the form container
+  const clone = formContainer.cloneNode(true);
+
+  // Replace input fields with plain text
+  const inputs = clone.querySelectorAll('input[type="text"], input[type="number"], input[type="date"]');
+  inputs.forEach(input => {
+    const value = input.value;
+    const span = document.createElement('span');
+    span.textContent = value;
+    input.parentNode.replaceChild(span, input);
+  });
+
+  // Replace checkboxes with checkmarks
+  const checkboxes = clone.querySelectorAll('input[type="checkbox"]');
+  checkboxes.forEach(checkbox => {
+    const td = checkbox.closest('td');
+    td.textContent = checkbox.checked ? '✅' : '';
+  });
+
+  // Replace all textareas with their content
+  const textareas = clone.querySelectorAll('textarea');
+  textareas.forEach(textarea => {
+    const div = document.createElement('div');
+    div.style.whiteSpace = 'pre-wrap';
+    div.style.textAlign = 'left';
+    div.textContent = textarea.value;
+    textarea.parentNode.replaceChild(div, textarea);
+  });
+
+  // Show and hide containers
+  previewContainer.style.display = 'block';
+  formContainer.style.display = 'none';
+  formPreview.appendChild(clone);
+}
+
 
   function editForm() {
     document.getElementById('previewContainer').style.display = 'none';
