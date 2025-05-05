@@ -296,34 +296,27 @@ textarea {
   </div>
 
 <script>
-function previewForm() {
+function previewForm(callback) {
   const formContainer = document.getElementById('formContainer');
   const previewContainer = document.getElementById('previewContainer');
   const formPreview = document.getElementById('formPreview');
 
-  // Clear previous preview
   formPreview.innerHTML = '';
-
-  // Clone the form container
   const clone = formContainer.cloneNode(true);
 
-  // Hide any elements meant to be excluded from the preview
+  // Hide excluded buttons
   const excludePreviewBtns = clone.querySelectorAll('.exclude-from-preview');
   excludePreviewBtns.forEach(btn => btn.style.display = 'none');
   const previewBtnInClone = clone.querySelector('#previewBtn');
-  if (previewBtnInClone) {
-    previewBtnInClone.style.display = 'none';
-  }
+  if (previewBtnInClone) previewBtnInClone.style.display = 'none';
 
-  // Convert inputs to styled preview spans
+  // Convert inputs to underlined spans
   const inputs = clone.querySelectorAll('input[type="text"], input[type="number"], input[type="date"]');
   inputs.forEach(input => {
     const value = input.value || ' ';
     const label = input.closest('label');
-
     if (label) {
       const labelText = label.childNodes[0].textContent;
-
       const container = document.createElement('div');
       container.style.flex = label.style.flex || '0 0 48%';
       container.style.display = 'flex';
@@ -355,7 +348,7 @@ function previewForm() {
     td.textContent = checkbox.checked ? '✔' : '';
   });
 
-  // Replace textareas with plain text
+  // Replace textareas with static text
   const textareas = clone.querySelectorAll('textarea');
   textareas.forEach(textarea => {
     const div = document.createElement('div');
@@ -365,7 +358,7 @@ function previewForm() {
     textarea.parentNode.replaceChild(div, textarea);
   });
 
-  // Add preview title
+  // Add title
   const title = document.createElement('h1');
   title.textContent = 'Trackmobile Evaluation Sheet';
   title.style.textAlign = 'center';
@@ -375,23 +368,36 @@ function previewForm() {
   formPreview.appendChild(title);
   formPreview.appendChild(clone);
 
-  // Show/hide containers
+  // Toggle visibility
   document.getElementById('previewBtn').style.display = 'none';
   previewContainer.style.display = 'block';
   formContainer.style.display = 'none';
-}
 
-function editForm() {
-  document.getElementById('previewBtn').style.display = 'inline-block';
-  document.getElementById('previewContainer').style.display = 'none';
-  document.getElementById('formContainer').style.display = 'block';
+  // Callback support
+  if (typeof callback === 'function') {
+    callback();
+  }
 }
 
 function downloadImage() {
-  const previewContent = document.getElementById('formPreviewContent');
+  const formContainer = document.getElementById('formContainer');
 
-  // Hide buttons before capturing
+  // If form is visible, preview first, then capture
+  if (formContainer.style.display !== 'none') {
+    previewForm(() => {
+      setTimeout(() => {
+        captureImage();
+      }, 150);
+    });
+  } else {
+    captureImage();
+  }
+}
+
+function captureImage() {
+  const previewContent = document.getElementById('formPreviewContent');
   const elementsToHide = document.querySelectorAll('.exclude-from-image');
+
   elementsToHide.forEach(el => el.classList.add('hide-for-download'));
 
   html2canvas(previewContent).then(canvas => {
@@ -400,9 +406,14 @@ function downloadImage() {
     link.href = canvas.toDataURL();
     link.click();
 
-    // Show buttons again after capture
     elementsToHide.forEach(el => el.classList.remove('hide-for-download'));
   });
+}
+
+function editForm() {
+  document.getElementById('previewBtn').style.display = 'inline-block';
+  document.getElementById('previewContainer').style.display = 'none';
+  document.getElementById('formContainer').style.display = 'block';
 }
 
 function makeCheckboxesMutuallyExclusive() {
@@ -421,7 +432,7 @@ function makeCheckboxesMutuallyExclusive() {
 }
 
 window.onload = function () {
-  // Auto-check the "OK" checkbox (first checkbox in each row)
+  // Auto-check the "OK" checkbox (first in each row)
   document.querySelectorAll("table tbody tr").forEach(row => {
     const checkboxes = row.querySelectorAll("input[type='checkbox']");
     if (checkboxes.length >= 1) {
@@ -432,6 +443,7 @@ window.onload = function () {
   makeCheckboxesMutuallyExclusive();
 };
 </script>
+
 
 
 </body>
