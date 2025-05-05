@@ -285,7 +285,6 @@ function previewForm() {
   // Clone the form container
   const clone = formContainer.cloneNode(true);
 
-  // Replace labeled input fields with underlined spans
   const inputs = clone.querySelectorAll('input[type="text"], input[type="number"], input[type="date"]');
   inputs.forEach(input => {
     const value = input.value || ' ';
@@ -294,10 +293,11 @@ function previewForm() {
     if (label) {
       const labelText = label.childNodes[0].textContent;
 
-      const container = document.createElement('label');
+      const container = document.createElement('div');
       container.style.flex = label.style.flex || '0 0 48%';
       container.style.display = 'flex';
-      container.style.flexDirection = 'column';
+      container.style.alignItems = 'center';
+      container.style.gap = '6px';
       container.style.fontSize = '12px';
 
       const labelSpan = document.createElement('span');
@@ -306,9 +306,9 @@ function previewForm() {
       const underlineSpan = document.createElement('span');
       underlineSpan.textContent = value;
       underlineSpan.style.borderBottom = '1px solid #000';
-      underlineSpan.style.padding = '2px 0';
       underlineSpan.style.display = 'inline-block';
-      underlineSpan.style.minHeight = '16px';
+      underlineSpan.style.minWidth = '120px';
+      underlineSpan.style.padding = '2px 0';
 
       container.appendChild(labelSpan);
       container.appendChild(underlineSpan);
@@ -316,6 +316,7 @@ function previewForm() {
       label.parentNode.replaceChild(container, label);
     }
   });
+
 
   // Replace checkboxes with checkmarks
   const checkboxes = clone.querySelectorAll('input[type="checkbox"]');
