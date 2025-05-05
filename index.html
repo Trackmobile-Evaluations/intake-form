@@ -141,8 +141,9 @@ textarea {
 </head>
 <body>
   <h1>Trackmobile Evaluation Sheet</h1>
-  <div id="formContainer">
-<div class="form-section">
+<div id="formContainer">
+  <div id="formFields">
+    <div class="form-section">
   <div class="two-column-row">
     <label>Work Order:<input type="text" id="workOrder" class="underline-input"></label>
     <label>Date:<input type="date" id="date" class="underline-input"></label>
@@ -258,7 +259,7 @@ textarea {
       <label><strong>Any Additional Repairs:</strong></label>
       <textarea id="additionalNotes" rows="12"></textarea>
     </div>
-
+</div>
 <div class="button-group preview-buttons">
   <button onclick="previewForm()">Preview</button>
   <button onclick="downloadImage()">Download as Image</button>
